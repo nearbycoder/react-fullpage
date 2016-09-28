@@ -75,6 +75,8 @@ var SectionsContainer = _react2['default'].createClass({
 
   componentWillUnmount: function componentWillUnmount() {
     window.removeEventListener('resize', this._handleResize);
+    window.removeEventListener('hashchange', this._handleAnchor);
+    this._removeMouseWheelEventHandlers();
   },
 
   componentDidMount: function componentDidMount() {
@@ -139,7 +141,8 @@ var SectionsContainer = _react2['default'].createClass({
   },
 
   _addHeightToParents: function _addHeightToParents() {
-    var child = _reactDom2['default'].findDOMNode(this);
+    // var child = _reactDom2['default'].findDOMNode(this);
+    var child = this.refs;
     var previousParent = child.parentNode;
 
     while (previousParent) {
