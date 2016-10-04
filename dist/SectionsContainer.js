@@ -14,6 +14,8 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var isTouchDevice = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|playbook|silk|BlackBerry|BB10|Windows Phone|Tizen|Bada|webOS|IEMobile|Opera Mini)/);
+
 var SectionsContainer = _react2['default'].createClass({
   displayName: 'SectionsContainer',
 
@@ -76,6 +78,7 @@ var SectionsContainer = _react2['default'].createClass({
   componentWillUnmount: function componentWillUnmount() {
     window.removeEventListener('resize', this._handleResize);
     window.removeEventListener('hashchange', this._handleAnchor);
+    this._addOverflowToBody('visible');
     this._removeMouseWheelEventHandlers();
   },
 
@@ -95,9 +98,11 @@ var SectionsContainer = _react2['default'].createClass({
   },
 
   _addCSS3Scroll: function _addCSS3Scroll() {
-    this._addOverflowToBody();
-    this._addHeightToParents();
-    this._addMouseWheelEventHandlers();
+    if (!isTouchDevice) {
+      this._addOverflowToBody();
+      this._addHeightToParents();
+      this._addMouseWheelEventHandlers();
+    }
   },
 
   _addActiveClass: function _addActiveClass() {
@@ -136,8 +141,9 @@ var SectionsContainer = _react2['default'].createClass({
     }).bind(this));
   },
 
-  _addOverflowToBody: function _addOverflowToBody() {
-    document.querySelector('body').style.overflow = 'hidden';
+  _addOverflowToBody: function _addOverflowToBody(overflow) {
+    overflow = overflow || 'hidden';
+    document.querySelector('body').style.overflow = overflow;
   },
 
   _addHeightToParents: function _addHeightToParents() {
@@ -168,9 +174,12 @@ var SectionsContainer = _react2['default'].createClass({
   _mouseWheelHandler: function _mouseWheelHandler() {
     var _this = this;
 
-    this._removeMouseWheelEventHandlers();
-
     var e = window.event || e; // old IE support
+    if (!!e.target.className && (e.target.className.indexOf('maxim-story__text') !== -1 || e.target.className.indexOf('maxim-story__middle') !== -1 || e.target.className.indexOf('maxim-story__share') !== -1 || e.target.className.indexOf('scroller') !== -1)) {
+      return true;
+    }
+
+    this._removeMouseWheelEventHandlers();
     var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
     var position = this.state.sectionScrolledPosition + delta * this.state.windowHeight;
     var activeSection = this.state.activeSection - delta;
@@ -183,6 +192,7 @@ var SectionsContainer = _react2['default'].createClass({
     var index = this.props.anchors[activeSection];
     if (!this.props.anchors.length || index) {
       window.location.hash = '#' + index;
+      !!window.ga && window.ga('send', 'pageview', index);
     }
 
     this.setState({
@@ -208,7 +218,11 @@ var SectionsContainer = _react2['default'].createClass({
   },
 
   _handleSectionTransition: function _handleSectionTransition(index) {
-    var position = 0 - index * this.state.windowHeight;
+    if (!isTouchDevice) {
+      var position = 0 - index * this.state.windowHeight;
+    } else {
+      window.scrollTo(0, index * this.state.windowHeight);
+    }
 
     if (!this.props.anchors.length || index === -1 || index >= this.props.anchors.length) {
       return false;
@@ -237,6 +251,9 @@ var SectionsContainer = _react2['default'].createClass({
     var index = this.props.anchors.indexOf(hash);
 
     this._handleSectionTransition(index);
+    if (isTouchDevice) {    
+      window.scrollTo(0, index * this.state.windowHeight);
+    }
 
     this._addActiveClass();
   },
