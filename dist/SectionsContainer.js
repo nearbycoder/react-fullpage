@@ -175,8 +175,13 @@ var SectionsContainer = _react2['default'].createClass({
     var _this = this;
 
     var e = window.event || e; // old IE support
-    if (!!e.target.className && (e.target.className.indexOf('maxim-story__text') !== -1 || e.target.className.indexOf('maxim-story__middle') !== -1 || e.target.className.indexOf('maxim-story__share') !== -1 || e.target.className.indexOf('scroller') !== -1)) {
-      return true;
+    var scr = e.target;
+    while ((scr = scr.parentElement) && !scr.classList.contains('scroller'));
+    if (!!scr) {
+      console.log(e);
+      if (scr.scrollTop + scr.clientHeight < scr.scrollHeight && e.deltaY > 0 || scr.scrollTop !== 0 && e.deltaY < 0) {
+        return true;
+      }
     }
 
     this._removeMouseWheelEventHandlers();
