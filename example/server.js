@@ -2,7 +2,7 @@ var config = require('./webpack.config.js');
 var webpack = require('webpack');
 var webpackDevServer = require('webpack-dev-server');
 
-config.entry.unshift('webpack-dev-server/client?http://localhost:9090');
+config.entry.unshift('webpack-dev-server/client?http://192.168.10.12:9090');
 
 new webpackDevServer(webpack(config), {
   contentBase: __dirname + '/',
@@ -20,7 +20,7 @@ new webpackDevServer(webpack(config), {
     source: true,
 		children: true
   }
-}).listen(9090, 'localhost', function (err) {
+}).listen(9090, '192.168.10.12', function (err) {
   if (err) {
     console.log(err);
   }

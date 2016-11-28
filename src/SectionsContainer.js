@@ -82,6 +82,7 @@ const SectionsContainer = React.createClass({
     this._addOverflowToBody();
     this._addHeightToParents();
     this._addMouseWheelEventHandlers();
+    this._addTouchEventHandlers();
   },
   
   _addActiveClass() {
@@ -146,6 +147,49 @@ const SectionsContainer = React.createClass({
   _removeMouseWheelEventHandlers() {
     window.removeEventListener('mousewheel', this._mouseWheelHandler);
     window.removeEventListener('DOMMouseScroll', this._mouseWheelHandler);
+  },
+
+  _addTouchEventHandlers() {
+    window.addEventListener('touchstart', this._touchStartHandler, false);
+    window.addEventListener('touchend', this._touchEndHandler, false);
+  },
+
+  _removeTouchEventHandlers() {
+    window.addEventListener('touchstart', this._touchStartHandler);
+    window.addEventListener('touchend', this._touchEndHandler);
+  },
+
+  _touchStartHandler() {
+    let e = window.event || e; // old IE support
+    e.preventDefault();
+    this.setState({touchStart: e.changedTouches[0].pageY})
+  },
+
+  _touchEndHandler() {
+    this._removeTouchEventHandlers();
+
+    let e = window.event || e; // old IE support
+    e.preventDefault();
+    let delta         = e.changedTouches[0].pageY > this.state.touchStart ? 1 : -1;
+    let position      = this.state.sectionScrolledPosition + (delta * this.state.windowHeight);
+    let activeSection = this.state.activeSection - delta;
+    let maxPosition   = 0 - (this.props.children.length * this.state.windowHeight);
+
+    if (position > 0 || maxPosition === position  || this.state.scrollingStarted) {
+      return this._addTouchEventHandlers();
+    }
+
+    this.setState({
+      activeSection: activeSection,
+      scrollingStarted: true,
+      sectionScrolledPosition: position
+    });
+
+    setTimeout(() => {
+      this.setState({
+        scrollingStarted: false
+      });
+    }, this.props.delay + 300);
   },
   
   _mouseWheelHandler() {
