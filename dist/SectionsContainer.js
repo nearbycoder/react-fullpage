@@ -185,6 +185,13 @@ var SectionsContainer = _react2['default'].createClass({
     this._removeTouchEventHandlers();
 
     var e = window.event || e; // old IE support
+
+    if (e.target.className.match(/\bNavigation-Anchor\b/)) {
+      window.location.hash = e.target.getAttribute('href');
+      this._handleAnchor();
+      return;
+    }
+    console.log(e.target);
     e.preventDefault();
     var delta = e.changedTouches[0].pageY > this.state.touchStart ? 1 : -1;
     var position = this.state.sectionScrolledPosition + delta * this.state.windowHeight;
