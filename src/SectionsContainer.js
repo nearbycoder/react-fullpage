@@ -175,7 +175,6 @@ const SectionsContainer = React.createClass({
       this._handleAnchor()
       return
     }
-    console.log(e.target)
     e.preventDefault();
     let delta         = e.changedTouches[0].pageY > this.state.touchStart ? 1 : -1;
     let position      = this.state.sectionScrolledPosition + (delta * this.state.windowHeight);
