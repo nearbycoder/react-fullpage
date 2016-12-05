@@ -21841,7 +21841,6 @@
 	      this._handleAnchor();
 	      return;
 	    }
-	    console.log(e.target);
 	    e.preventDefault();
 	    var delta = e.changedTouches[0].pageY > this.state.touchStart ? 1 : -1;
 	    var position = this.state.sectionScrolledPosition + delta * this.state.windowHeight;
@@ -22044,7 +22043,8 @@
 	      display: alignVertical ? 'table' : 'block',
 	      height: this.state.windowHeight,
 	      maxHeight: this.state.windowHeight,
-	      overflow: 'scroll',
+	      "overflow-y": 'scroll',
+	      "overflow-x": 'hidden',
 	      backgroundColor: this.props.color,
 	      paddingTop: this.context.sectionPaddingTop,
 	      paddingBottom: this.context.sectionPaddingBottom
