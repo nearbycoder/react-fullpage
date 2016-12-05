@@ -22043,8 +22043,8 @@
 	      display: alignVertical ? 'table' : 'block',
 	      height: this.state.windowHeight,
 	      maxHeight: this.state.windowHeight,
-	      "overflow-y": 'scroll',
-	      "overflow-x": 'hidden',
+	      'overflow-y': 'scroll',
+	      'overflow-x': 'hidden',
 	      backgroundColor: this.props.color,
 	      paddingTop: this.context.sectionPaddingTop,
 	      paddingBottom: this.context.sectionPaddingBottom
