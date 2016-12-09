@@ -174,6 +174,10 @@ var SectionsContainer = _react2['default'].createClass({
   },
 
   _touchStartHandler: function _touchStartHandler() {
+    if (screen.width <= 767) {
+      return;
+    }
+
     var e = window.event || e; // old IE support
     e.preventDefault();
     this.setState({ touchStart: e.changedTouches[0].pageY });
@@ -181,6 +185,10 @@ var SectionsContainer = _react2['default'].createClass({
 
   _touchEndHandler: function _touchEndHandler() {
     var _this = this;
+
+    if (screen.width <= 767) {
+      return;
+    }
 
     this._removeTouchEventHandlers();
 

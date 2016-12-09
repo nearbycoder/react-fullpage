@@ -21824,6 +21824,10 @@
 	  },
 
 	  _touchStartHandler: function _touchStartHandler() {
+	    if (screen.width <= 767) {
+	      return;
+	    }
+
 	    var e = window.event || e; // old IE support
 	    e.preventDefault();
 	    this.setState({ touchStart: e.changedTouches[0].pageY });
@@ -21831,6 +21835,10 @@
 
 	  _touchEndHandler: function _touchEndHandler() {
 	    var _this = this;
+
+	    if (screen.width <= 767) {
+	      return;
+	    }
 
 	    this._removeTouchEventHandlers();
 
@@ -22043,8 +22051,8 @@
 	      display: alignVertical ? 'table' : 'block',
 	      height: this.state.windowHeight,
 	      maxHeight: this.state.windowHeight,
-	      'overflow-y': 'scroll',
-	      'overflow-x': 'hidden',
+	      overflowY: 'scroll',
+	      overflowX: 'hidden',
 	      backgroundColor: this.props.color,
 	      paddingTop: this.context.sectionPaddingTop,
 	      paddingBottom: this.context.sectionPaddingBottom

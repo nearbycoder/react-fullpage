@@ -160,12 +160,20 @@ const SectionsContainer = React.createClass({
   },
 
   _touchStartHandler() {
+    if(screen.width <= 767) {
+      return;
+    }
+    
     let e = window.event || e; // old IE support
     e.preventDefault();
     this.setState({touchStart: e.changedTouches[0].pageY})
   },
 
   _touchEndHandler() {
+    if(screen.width <= 767) {
+      return;
+    }
+    
     this._removeTouchEventHandlers();
 
     let e = window.event || e; // old IE support
