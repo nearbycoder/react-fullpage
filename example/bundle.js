@@ -21823,17 +21823,17 @@
 	    window.addEventListener('touchend', this._touchEndHandler);
 	  },
 
-	  _touchStartHandler: function _touchStartHandler() {
+	  _touchStartHandler: function _touchStartHandler(event) {
 	    if (screen.width <= 767) {
 	      return;
 	    }
 
-	    var e = window.event || e; // old IE support
+	    var e = event || e; // old IE support
 	    e.preventDefault();
 	    this.setState({ touchStart: e.changedTouches[0].pageY });
 	  },
 
-	  _touchEndHandler: function _touchEndHandler() {
+	  _touchEndHandler: function _touchEndHandler(event) {
 	    var _this = this;
 
 	    if (screen.width <= 767) {
@@ -21842,7 +21842,7 @@
 
 	    this._removeTouchEventHandlers();
 
-	    var e = window.event || e; // old IE support
+	    var e = event || e; // old IE support
 
 	    if (e.target.className.match(/\bNavigation-Anchor\b/)) {
 	      window.location.hash = e.target.getAttribute('href');
@@ -21872,12 +21872,12 @@
 	    }, this.props.delay + 300);
 	  },
 
-	  _mouseWheelHandler: function _mouseWheelHandler() {
+	  _mouseWheelHandler: function _mouseWheelHandler(event) {
 	    var _this2 = this;
 
 	    this._removeMouseWheelEventHandlers();
 
-	    var e = window.event || e; // old IE support
+	    var e = event || e; // old IE support
 	    var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
 	    var position = this.state.sectionScrolledPosition + delta * this.state.windowHeight;
 	    var activeSection = this.state.activeSection - delta;

@@ -159,24 +159,24 @@ const SectionsContainer = React.createClass({
     window.addEventListener('touchend', this._touchEndHandler);
   },
 
-  _touchStartHandler() {
+  _touchStartHandler(event) {
     if(screen.width <= 767) {
       return;
     }
     
-    let e = window.event || e; // old IE support
+    let e = event || e; // old IE support
     e.preventDefault();
     this.setState({touchStart: e.changedTouches[0].pageY})
   },
 
-  _touchEndHandler() {
+  _touchEndHandler(event) {
     if(screen.width <= 767) {
       return;
     }
     
     this._removeTouchEventHandlers();
 
-    let e = window.event || e; // old IE support
+    let e = event || e; // old IE support
 
     if (e.target.className.match(/\bNavigation-Anchor\b/)) {
       window.location.hash = e.target.getAttribute('href');
@@ -206,10 +206,10 @@ const SectionsContainer = React.createClass({
     }, this.props.delay + 300);
   },
   
-  _mouseWheelHandler() {
+  _mouseWheelHandler(event) {
     this._removeMouseWheelEventHandlers();
-    
-    let e             = window.event || e; // old IE support
+
+    let e             = event || e; // old IE support
 	  let delta         = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
     let position      = this.state.sectionScrolledPosition + (delta * this.state.windowHeight);
     let activeSection = this.state.activeSection - delta;
